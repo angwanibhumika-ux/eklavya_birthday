@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Eklavya 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+  background: linear-gradient(#ffd6e8, #fff);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Screens */
+.screen {
+  display: none;
+  height: 100vh;
+  padding: 40px 20px;
+}
+.screen.active { display: block; }
+
+/* Buttons */
+button {
+  background: #ff6f91;
+  border: none;
+  padding: 15px 28px;
+  font-size: 16px;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  animation: wiggle 2s infinite;
+}
+@keyframes wiggle {
+  0%,100% { transform: rotate(0); }
+  25% { transform: rotate(1deg); }
+  75% { transform: rotate(-1deg); }
+}
+
+/* Cake */
+.cake {
+  width: 220px;
+  height: 130px;
+  background: #ffb6c1;
+  margin: 60px auto;
+  border-radius: 15px;
+  position: relative;
+  animation: cakeBounce 1.5s ease-in-out infinite alternate;
+}
+@keyframes cakeBounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
+}
+.candle {
+  width: 12px;
+  height: 40px;
+  background: white;
+  position: absolute;
+  top: -40px;
+}
+.candle:nth-child(1){left:50px;}
+.candle:nth-child(2){left:105px;}
+.candle:nth-child(3){left:160px;}
+.flame::after {
+  content: "🔥";
+  position: absolute;
+  top: -28px;
+  left: -6px;
+  font-size: 22px;
+}
+
+/* Floating hearts */
+.floating-heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp 6s linear;
+  opacity: 0.8;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* Typing text */
+#typeText { font-size: 16px; line-height: 1.6; }
+
+/* Special dates */
+.timeline {
+  background: #fff0f6;
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 320px;
+  margin: 20px auto;
+}
+.date {
+  margin: 14px 0;
+  font-size: 15px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
+}
+.date.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hug */
+#hug {
+  font-size: 60px;
+  animation: hugPulse 1.5s infinite;
+}
+@keyframes hugPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+<button id="musicBtn"
+style="
+position:fixed;
+bottom:20px;
+right:20px;
+background:#ff6f91;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:20px;
+font-size:14px;
+z-index:999;">
+🎵 Tap for music
+</button>
+
+<!-- SCREEN 1 -->
+<div class="screen active" id="s1">
+  <h2>Hey Eklavya 🧸</h2>
+  <p>Someone far away made this just for you 💖</p>
+  <button onclick="next(2)">Tap gently 🎁</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen" id="s2">
+  <h3>Blow the candles for us 🎂</h3>
+  <div class="cake">
+    <div class="candle flame"></div>
+    <div class="candle flame"></div>
+    <div class="candle flame"></div>
+  </div>
+  <button onclick="blow()">Blow for us 💕</button>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen" id="s3">
+  <h2>💌</h2>
+  <p id="typeText"></p>
+  <button onclick="next(4)">Next 🐣</button>
+</div>
+
+<!-- SCREEN 4 : SPECIAL DATES -->
+<div class="screen" id="s4">
+  <h2>📅 Our Special Dates</h2>
+  <div class="timeline">
+    <div class="date">💌 31 March — The day I said “I love you”</div>
+    <div class="date">💋 7 April — Our first online kiss</div>
+    <div class="date">💞 Every day — Choosing you again</div>
+    <div class="date">🎂 23 January — The day you were born</div>
+  </div>
+  <button onclick="next(5)">One last thing 💖</button>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen" id="s5">
+  <h2>🎉 Happy Birthday Eklavya 🎉</h2>
+  <p>You make distance feel smaller every day 💞</p>
+  <div id="hug">🤗</div>
+  <p>A virtual hug just for you</p>
+</div>
+
+<script>
+let musicStarted = false;
+document.getElementById("musicBtn").onclick = function(){
+  let m = document.getElementById("bgMusic");
+  m.volume = 0.3;
+  m.play();
+  this.style.display = "none";
+};
+
+/* Screen change */
+function next(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+
+  if(!musicStarted){
+    let m = document.getElementById("bgMusic");
+    m.volume = 0.3;
+    m.play();
+    musicStarted = true;
+  }
+
+  if(n === 4){
+    animateDates();
+  }
+}
+
+/* Blow candles */
+function blow(){
+  document.querySelectorAll('.flame').forEach(f=>f.classList.remove('flame'));
+  startHearts();
+  setTimeout(()=>next(3),1200);
+}
+
+/* Floating hearts */
+function startHearts(){
+  let interval = setInterval(()=>{
+    let heart = document.createElement("div");
+    heart.className = "floating-heart";
+    heart.innerHTML = ["💖","💗","💕","💘"][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (16 + Math.random()*18) + "px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+  },500);
+  setTimeout(()=>clearInterval(interval),4000);
+}
+
+/* Typing effect */
+let msg = "Distance tried to keep us apart...\n\nBut love travels faster 💗\n\nHappy Birthday Eklavya 🎉";
+let i = 0;
+function typeEffect(){
+  if(i < msg.length){
+    document.getElementById("typeText").innerHTML +=
+      msg[i] === "\n" ? "<br>" : msg[i];
+    i++;
+    setTimeout(typeEffect,60);
+  }
+}
+document.getElementById("s3").addEventListener("click", typeEffect, { once:true });
+
+/* Animate dates */
+function animateDates(){
+  let dates = document.querySelectorAll("#s4 .date");
+  dates.forEach((d, i) => {
+    setTimeout(() => {
+      d.classList.add("show");
+    }, i * 700);
+  });
+}
+</script>
+
+</body>
+</html>
